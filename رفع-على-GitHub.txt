@@ -1,0 +1,39 @@
+رفع البرنامج على GitHub مع تحديث تلقائي على السيرفر
+=====================================================
+
+لازم الأول تكون خلصت خطوات الملف "تشغيل-على-الانترنت.txt" من 2 لـ 8
+(حساب Fly.io، fly launch، المساحة، المستخدم، أول fly deploy).
+GitHub هنا بيحدّث برنامج موجود بالفعل، مش بيبدأه من الصفر.
+
+1) أنشئ Repository على github.com
+   - اضغط New repository، واختار الخصوصية: Private (مهم جدا).
+   - متحطش README ولا .gitignore من عندهم (الفولدر فيه .gitignore جاهز).
+
+2) ارفع الفولدر (PowerShell جوه فولدر press، بعد تثبيت Git):
+      git init -b main
+      git add .
+      git status
+   راجع القايمة: لازم مفيهاش أي ملف .db. لو لقيت واحد، وقّف ومتكمّلش.
+      git commit -m "first version"
+      git remote add origin https://github.com/اسم_حسابك/اسم_الريبو.git
+      git push -u origin main
+
+3) اربط GitHub بـ Fly.io:
+   - اعمل مفتاح نشر:
+         fly tokens create deploy
+     انسخ الناتج كله.
+   - في صفحة الريبو: Settings ← Secrets and variables ← Actions ← New repository secret
+     الاسم:  FLY_API_TOKEN
+     القيمة: المفتاح اللي نسخته.
+
+4) من دلوقتي: أي تعديل ترفعه بـ
+      git add .
+      git commit -m "وصف التعديل"
+      git push
+   بيتنشر لوحده على السيرفر (تابع التقدم من تبويب Actions في الريبو).
+
+ملاحظات
+--------
+- بياناتك (press.db) على السيرفر بس، والتحديث التلقائي مبيلمسهاش.
+- متضيفش أبدا نسخة احتياطية أو press.db للريبو، حتى لو Private.
+- مفتاح FLY_API_TOKEN سري، متشاركهوش ومتكتبوش في أي ملف.
